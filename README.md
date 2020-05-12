@@ -1,3 +1,6 @@
+# Disclaimer: Very early release code. In testing stage only. Do not use in production and let me know of any potential issues and fixes with it.
+    
+
 # Multivariate-Distance-Based-MANOVA - Cited Work and Class Parameters
     This code is based off of the following work:
 
