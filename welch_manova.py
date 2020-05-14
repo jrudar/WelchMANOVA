@@ -8,7 +8,7 @@ from deicode.matrix_completion import MatrixCompletion
 from deicode.preprocessing import rclr
 
 from numpy import asarray, power, copy, sqrt, float32, hstack
-from numpy.random import shuffle, choice
+from numpy.random import shuffle
 
 from statsmodels.stats.multitest import multipletests
 
@@ -312,7 +312,7 @@ class WelchMANOVA():
         The possible options are:
             "compositional" - Constructs a distance matrix using Deicode
 
-            From Scikit-Learn: "cityblock", "cosine", "euclidean", "l1", "l2",
+            From Scikit-Learn - "cityblock", "cosine", "euclidean", "l1", "l2",
             "manhattan", "braycurtis", "canberra", "chebyshev", "correlation",
             "dice", "hamming", "jaccard", "kulsinski", "rogerstanimoto", 
             "russellrao", "seuclidean", "sokalmichener", "sokalsneath",
@@ -329,7 +329,7 @@ class WelchMANOVA():
 
     max_iter: int, default = 10
         The number of iterations the matrix completion algorithm of the
-        Deicode package will run for. Only use if metric is 'compositional'.
+        Deicode package will run for. Only used if metric is 'compositional'.
 
     comp_method: str, default = "ovo"
         If multiple treatment groups are present, this parameter specifies
@@ -341,9 +341,9 @@ class WelchMANOVA():
             "ovr" - One vs. Rest
 
     alpha: float, default = 0.05
-        Threshold for significance
+        Threshold for significance for conducting pairwise tests.
 
-    method: str, default = "b"
+    method: str, default = "fdr_bh"
         Method which is used to adjust p-values if more than two comparisons
         are made. Possible options are:
             "b" - Bonferroni
@@ -380,10 +380,11 @@ class WelchMANOVA():
         """
         Input:
         ------
-        X: Numpy array of shape (m, n) where 'm' is the number of samples and 'n'
-        the number of features (taxa, OTUs, ASVs, etc)
+        X: NumPy array of shape (m, n) where 'm' is the number of samples and 'n'
+        the number of features (taxa, OTUs, ASVs, etc). If X is a distance matrix,
+        it should be of shape (m, m).
 
-        y: Numpy array of shape (m,) where 'm' is the number of samples. Each entry
+        y: NumPy array of shape (m,) where 'm' is the number of samples. Each entry
         of 'y' should be a factor.
 
         Returns:
@@ -412,33 +413,23 @@ class WelchMANOVA():
         self.y = y
 
         #Calculate permuted statistic
-        if len(set(self.y)) > 2:
-            W_star, p_value = manova(power(self.D, 2), 
-                                     self.y,
-                                     self.n_perm)
+        W_star, p_value = manova(power(self.D, 2), 
+                                 self.y,
+                                 self.n_perm)
 
-            #Save data
-            self.W_star_d = W_star
-            self.p_value = p_value
+        #Save data
+        self.Wd_star = W_star
+        self.p_value = p_value
 
-            if self.p_value >= self.alpha:
-                print ("Test Statisitic: ", self.W_star_d)
-                print ("p-value: ", self.p_value)
+        print ("Wd*: ", self.Wd_star)
+        print ("p-value: ", self.p_value)
 
-            else:
-                print ("Test Statisitic: ", self.W_star_d)
-                print ("p-value: ", self.p_value, "\n")
-
-                self._pairwise()
-
-        else:
-            self._pairwise()
+        if len(set(self.y)) > 2 and self.p_value <= self.alpha: self._pairwise()
 
         return self
 
     def _pairwise(self):
         
-        #Calculate p-values
         y_set = list(set(self.y))
 
         self.comparision = []
@@ -479,25 +470,23 @@ class WelchMANOVA():
                                                    self.method)[1]
 
             self.table_result = DataFrame(data = [self.test_statistics,
-                                                    self.raw_p_values,
-                                                    self.adjusted_p_values,
-                                                    self.effect_size],
-                                            index = ["T2_d Statistic",
-                                                    "Raw p-value",
-                                                    "Adjusted p-value",
-                                                    "Effect Size (Cohen's d)"],
-                                            columns = self.comparision).transpose()
+                                                  self.raw_p_values,
+                                                  self.adjusted_p_values,
+                                                  self.effect_size],
+                                          index = ["T2_d Statistic",
+                                                   "Raw p-value",
+                                                   "Adjusted p-value",
+                                                   "Effect Size (Cohen's d)"],
+                                          columns = self.comparision).transpose()
 
         else:
             self.table_result = DataFrame(data = [self.test_statistics,
-                                                    self.raw_p_values,
-                                                    self.effect_size],
-                                            index = ["T2_d Statistic",
-                                                    "Raw p-value",
-                                                    "Effect Size (Cohen's d)"],
-                                            columns = self.comparision).transpose()
+                                                  self.raw_p_values,
+                                                  self.effect_size],
+                                          index = ["T2_d Statistic",
+                                                   "p-value",
+                                                   "Effect Size (Cohen's d)"],
+                                          columns = self.comparision).transpose()
 
         print(self.table_result)
-
-
 
