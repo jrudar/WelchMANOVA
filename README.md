@@ -23,7 +23,7 @@
         The possible options are:
             "compositional" - Constructs a distance matrix using Deicode
 
-            From Scikit-Learn: "cityblock", "cosine", "euclidean", "l1", "l2",
+            From Scikit-Learn - "cityblock", "cosine", "euclidean", "l1", "l2",
             "manhattan", "braycurtis", "canberra", "chebyshev", "correlation",
             "dice", "hamming", "jaccard", "kulsinski", "rogerstanimoto", 
             "russellrao", "seuclidean", "sokalmichener", "sokalsneath",
@@ -40,7 +40,7 @@
 
     max_iter: int, default = 10
         The number of iterations the matrix completion algorithm of the
-        Deicode package will run for. Only use if metric is 'compositional'.
+        Deicode package will run for. Only used if metric is 'compositional'.
 
     comp_method: str, default = "ovo"
         If multiple treatment groups are present, this parameter specifies
@@ -54,7 +54,7 @@
     alpha: float, default = 0.05
         Threshold for significance
 
-    method: str, default = "b"
+    method: str, default = "fdr_bh"
         Method which is used to adjust p-values if more than two comparisons
         are made. Possible options are:
             "b" - Bonferroni
@@ -72,8 +72,9 @@
 ## Fit Method Parameters:
         Input:
         ------
-        X: Numpy array of shape (m, n) where 'm' is the number of samples and 'n'
-        the number of features (taxa, OTUs, ASVs, etc)
+        X: NumPy array of shape (m, n) where 'm' is the number of samples and 'n'
+        the number of features (taxa, OTUs, ASVs, etc). If X is a distance matrix,
+        it should be of shape (m, m).
 
         y: Numpy array of shape (m,) where 'm' is the number of samples. Each entry
         of 'y' should be a factor.
