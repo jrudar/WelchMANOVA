@@ -1,7 +1,7 @@
 ## Disclaimer: Very early release code. In testing stage only. Do not use in production and let me know of any potential issues and fixes with it.
     
 
-## Multivariate-Distance-Based-MANOVA - Cited Work and Class Parameters
+## Cited Work and Class Parameters
     This code is based off of the following work:
 
     Martino C, Morton JT, Marotz CA, Thompson LR, Tripathi A, Knight R, and
@@ -69,7 +69,7 @@
             "fdr_tsbky" - FDR Two-Stage Benjamini-Krieger-Yekutieli
             "fdr_gbs" - FDR Adaptive Gavrilov-Benjamini-Sarkar
        
-## Multivariate-Distance-Based-MANOVA - Fit Method Parameters:
+## Fit Method Parameters:
         Input:
         ------
         X: Numpy array of shape (m, n) where 'm' is the number of samples and 'n'
