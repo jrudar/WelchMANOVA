@@ -205,7 +205,7 @@ def ttest_ovr(D, y, A, n_perm):
                 n_greater += 1
 
         #The number 1 is added to both the numerator and denominator 
-        #since we already have at least 1 possible permutation (W_star)
+        #since we already have at least 1 possible permutation (T2w)
         p = (float(n_greater) + 1) / (float(n_perm) + 1)
 
     return T2w, p, d
@@ -284,7 +284,7 @@ def ttest_ovo(D, y, A, B, n_perm):
                 n_greater += 1
 
         #The number 1 is added to both the numerator and denominator 
-        #since we already have at least 1 possible permutation (W_star)
+        #since we already have at least 1 possible permutation (T2w)
         p = (float(n_greater) + 1) / (float(n_perm) + 1)
 
     return T2w, p, d
@@ -473,7 +473,7 @@ class WelchMANOVA():
                                                   self.raw_p_values,
                                                   self.adjusted_p_values,
                                                   self.effect_size],
-                                          index = ["T2_d Statistic",
+                                          index = ["T2w Statistic",
                                                    "Raw p-value",
                                                    "Adjusted p-value",
                                                    "Effect Size (Cohen's d)"],
@@ -483,7 +483,7 @@ class WelchMANOVA():
             self.table_result = DataFrame(data = [self.test_statistics,
                                                   self.raw_p_values,
                                                   self.effect_size],
-                                          index = ["T2_d Statistic",
+                                          index = ["T2w Statistic",
                                                    "p-value",
                                                    "Effect Size (Cohen's d)"],
                                           columns = self.comparision).transpose()
