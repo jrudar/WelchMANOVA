@@ -67,12 +67,12 @@ Once downloaded, go to the WelchMANOVA directory and type:
         of 'y' should be a factor.
         
 ### Example Usage
-from WelchMANOVA import WelchMANOVA
-from sklearn.datasets import make_classification
-
-X, y = make_classification()
-
-stats = WelchMANOVA(metric = "braycurtis").fit(X, y)
+        from WelchMANOVA import WelchMANOVA
+        from sklearn.datasets import make_classification
+        
+        X, y = make_classification()
+        
+        stats = WelchMANOVA().fit(X, y)
 
 ### Disclaimer
 This code is still in development. USE AT YOUR OWN RISK.
