@@ -1,4 +1,4 @@
-# Distance-Based-Welch-MANOVA v 1.0.0.dev
+### Distance-Based-Welch-MANOVA v 1.0.0.dev
 Python Implementation of Hamidi et al (2019). W∗d -test: robust  distance-based multivariate analysis of variance. Microbiome. 7(1): 51. doi: doi: 10.1186/s40168-019-0659-9.
 
 ### Install
