@@ -71,7 +71,8 @@ from WelchMANOVA import WelchMANOVA
 from sklearn.datasets import make_classification
 
 X, y = make_classification()
-stats = WelchMANOVA().fit(X, y)
+
+stats = WelchMANOVA(metric = "braycurtis").fit(X, y)
 
 ### Disclaimer
 This code is still in development. USE AT YOUR OWN RISK.
